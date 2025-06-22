@@ -4,6 +4,7 @@ import { dummyDateTimeData, dummyShowsData } from "../assets/assets";
 import BlurCircle from "../components/BlurCircle";
 import { Heart, PlayCircle, StarIcon } from "lucide-react";
 import timeFormat from "../lib/timeFormat";
+import DateSelect from "../components/DateSelect";
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -19,6 +20,7 @@ const MovieDetails = () => {
   useEffect(() => {
     getShow();
   }, [id]);
+  console.log("show", show);
   return show ? (
     <div className="px-6 md:px-16 lg:px-40 pt-30 md:pt-50">
       <div className="flex flex-col md:flex-row gap-8 max-w-6xl mx-auto">
@@ -79,6 +81,8 @@ const MovieDetails = () => {
           ))}
         </div>
       </div>
+
+      <DateSelect id={id} dateTime={show.dateTime} />
     </div>
   ) : (
     <div>Loading...</div>
