@@ -20,11 +20,11 @@ const TrailersSection = () => {
           height={"540px"}
         />
       </div>
-      <div className="group grid grid-cols-4 gap-4 md:gap-8 mt-8 max-w-3xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mt-8 max-w-6xl mx-auto">
         {dummyTrailers.map((trailer) => (
           <div
             key={trailer.image}
-            className="relative group-hover:not-hover:opacity-50 hover:-translate-y-1 duration-300 transition max-md:h-60 md:max-h-60 cursor-pointer"
+            className="relative group-hover:not-hover:opacity-50 hover:-translate-y-1 duration-300 transition max-md:h-60 md:max-h-60 cursor-pointer flex flex-wrap"
             onClick={() => setCurrentTrailer(trailer)}
           >
             <img
