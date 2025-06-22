@@ -1,7 +1,19 @@
 import React from "react";
+import { dummyShowsData } from "../assets/assets";
 
 const Movies = () => {
-  return <div>Movies</div>;
+  return (
+    <>
+      {dummyShowsData.length > 0 ? (
+        <div>
+          <h1></h1>
+          <div>{}</div>
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
+  );
 };
 
 export default Movies;
