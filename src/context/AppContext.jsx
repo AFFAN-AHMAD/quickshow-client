@@ -1,10 +1,4 @@
-import {
-  Children,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,8 +11,9 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [shows, setShows] = useState(false);
-  const [favoriteMovies, setFavoriteMovies] = useState(false);
+  const [shows, setShows] = useState([]);
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const image_base_url = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
 
   const { user } = useUser();
   const { getToken } = useAuth();
@@ -95,7 +90,9 @@ export const AppProvider = ({ children }) => {
     shows,
     favoriteMovies,
     fetchFavoriteMovies,
+    image_base_url,
   };
+  //   console.log("axios", axios);
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 

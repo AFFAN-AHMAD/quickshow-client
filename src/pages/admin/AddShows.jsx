@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { dummyShowsData } from "../../assets/assets";
 import Loading from "../../components/Loading";
 import Title from "../../components/admin/Title";
-import { CheckIcon, DeleteIcon, StarIcon } from "lucide-react";
+import { CheckIcon, DeleteIcon, StarIcon, UserCheck2Icon } from "lucide-react";
 import { kConverter } from "../../lib/kConverter";
+import { useAppContext } from "../../context/AppContext";
 
 const AddShows = () => {
+  const { axios, getToken, user, image_base_url } = useAppContext();
   const currency = import.meta.env.VITE_CURRENCY;
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -14,7 +16,19 @@ const AddShows = () => {
   const [showPrice, setShowPrice] = useState("");
 
   const fetchNowPlayingMovies = async () => {
-    setNowPlayingMovies(dummyShowsData);
+    // setNowPlayingMovies(dummyShowsData);
+    try {
+      const { data } = await axios.get("/api/show/now-playing", {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      });
+      if (data.success) {
+        setNowPlayingMovies(data.movies);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
   const handleDateTimeAdd = () => {
     if (!dateTimeInput) return;
@@ -46,8 +60,10 @@ const AddShows = () => {
     });
   };
   useEffect(() => {
-    fetchNowPlayingMovies();
-  }, []);
+    if (user) {
+      fetchNowPlayingMovies();
+    }
+  }, [user]);
   return nowPlayingMovies.length > 0 ? (
     <>
       <Title text1={"Add"} text2={"Shows"} />
@@ -62,7 +78,7 @@ const AddShows = () => {
             >
               <div className="relative rounded-lg overflow-hidden">
                 <img
-                  src={movie.poster_path}
+                  src={image_base_url + movie.poster_path}
                   alt=""
                   className="w-full object-cover brightness-90"
                 />
