@@ -4,18 +4,35 @@ import Loading from "../components/Loading";
 import BlurCircle from "../components/BlurCircle";
 import timeFormat from "../lib/timeFormat";
 import { dateFormat } from "../lib/dateFormat";
+import { useAppContext } from "../context/AppContext";
 
 const MyBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY;
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { axios, getToken, user, image_base_url } = useAppContext();
   const getMyBookings = async () => {
-    setBookings(dummyBookingData);
+    // setBookings(dummyBookingData);
+    // setIsLoading(false);
+    try {
+      const { data } = await axios.get("/api/user/bookings", {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      });
+      if (data.success) {
+        setBookings(data.bookings);
+      }
+    } catch (err) {
+      console.log(err);
+    }
     setIsLoading(false);
   };
   useEffect(() => {
-    getMyBookings();
-  }, []);
+    if (user) {
+      getMyBookings();
+    }
+  }, [user]);
   return !isLoading ? (
     <div className="relative px-6 md:px-16 lg:px-40 pt-30 md:pt-40 min-h-[80vh]">
       <BlurCircle top="100px" left="100px" />
